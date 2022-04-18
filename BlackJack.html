@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Black Jack</title>
+<marquee behavior="alternate" direction="left" scrollamount="15"><h2><u>Black Jack</u></h2></marquee>
+
+
+</head>
+<style>
+#container {
+  width: 450px;
+  height: 200px;
+  position: relative;
+  background: white;
+}
+#image1 {
+  padding: 5px;
+  width: 100px;
+  position: absolute;
+  height: 150px;
+}
+#image2 {
+  padding: 5px;
+  width: 100px;
+  position: absolute;
+  height: 150px;
+}
+.boxed{
+  color: white;
+  font-size: 14px;
+  clear:left;
+  border: 3px solid black;
+  background-color: rgb(42, 112, 63);
+  margin: 0 1.5%;
+  width: 35%;
+
+} 
+.boxedTwo{
+  color: white;
+  font-size: 14px;
+  border: 3px solid black;
+  background-color: rgb(42, 112, 63);clear: left;
+  margin: 0 1.5%;
+  width: 35%;
+  
+}
+.square{
+  float: right;
+  border: 2px solid black ;
+  width: 300px;
+  margin: 0 1.5%;
+} .bg{
+	background-image: url('');
+}
+</style>
+<body>
+<div class ="container"></div>
+<div class="image1"></div>
+<div class="image2"></div>
+<div class="bg"></div>
+
+<div class="boxed">
+	<form name="cards" id="cards" >
+	<h2><u>Player One</u></h2>
+	<label><b>Result</b></label> <input type = "text" name="result" id="result" readonly /> 
+	<br/>
+	<label><b>Point Total</b></label><input type = "text" name="result" id="char" readonly /> 
+	<br/>
+	<input type="button" value="Draw a card" onclick="draw()"/ >
+	<br/>
+	<p><b><u>Gamble!</u></b></p>
+	<label><b>Gamble Amount:</b></label><input type = "text" name="balance" id="gambleOne"/> 
+	<br/>
+	<label><b>Balance</b></label><input type = "text" name="total" id="total" readonly /> 
+	<input type="button" value="Gamble" onclick="gamble()"/ >
+	</form>
+	<br/>
+	<p><b><u>Card History:</u></b></p>
+	<img src="TopCard.jpg"  alt="any image" height="150" width="100" id="historyOne"/>
+	<img src="TopCard.jpg"  alt="any image" height="150" width="100" id="historyTwo"/>
+	<img src="TopCard.jpg"  alt="any image" height="150" width="100" id="historyThree"/>
+	<img src="TopCard.jpg"  alt="any image" height="150" width="100" id="historyFour"/>
+	<img src="TopCard.jpg"  alt="any image" height="150" width="100" id="historyFive"/>
+</div>
+<img src="TopCard.jpg"  alt="any image" id="image1"/>
+
+
+<div class="square">
+	<p>Rules:</p>
+	<p>1. One Player at a time.</p>
+	<p>2. If your balance hits 0 you lose.</p>
+	<p>3. If your balance hits at least 5000 you win.</p>
+</div>
+<div class="square">
+	<img src="whoOne.jpg"  alt="any image" height="100" width="100" id="image3"/>
+	<input type="button" value="Next Round" onclick="checkWinner()"/ >
+</div>
+
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+
+
+<div class="boxedTwo">
+	<h2><u>Player Two</u></h2>
+	<label><b>Result</b></label> <input type = "text" name="result" id="result2" readonly /> 
+	<br/>
+	<label><b>Point Total</b></label><input type = "text" name="result" id="char2" readonly /> 
+	<br/>
+	<input type="button" value="Draw a card" onclick="drawTwo()"/ >
+	<br/>
+	<p><b><u>Gamble!</u></b></p>
+	<label><b>Gamble Amount:</b></label><input type = "text" name="balance" id="gambleTwo"/> 
+	<br/>
+	<label><b>Balance</b></label><input type = "text" name="total" id="total2" readonly /> 
+	<input type="button" value="Gamble" onclick="gambleTwo()"/ >
+	</form>
+	<br/>
+	<p><b><u>Card History:</u></b></p>
+	<img src="TopCard.jpg"  alt="any image" height="150" width="100" id="historySix"/>
+	<img src="TopCard.jpg"  alt="any image" height="150" width="100" id="historySeven"/>
+	<img src="TopCard.jpg"  alt="any image" height="150" width="100" id="historyEight"/>
+	<img src="TopCard.jpg"  alt="any image" height="150" width="100" id="historyNine"/>
+	<img src="TopCard.jpg"  alt="any image" height="150" width="100" id="historyTen"/>
+</div>
+<img src="TopCard.jpg"  alt="any image" height="150" width="100" id="image2"/>
+
+
+<script type="text/javascript">
+//starting balance
+var valTotal = 1000;
+var valTotalTwo = 1000;
+var bal = 1000;
+var balTwo = 1000;
+//counters are for card history
+var counter = 0;
+var counterTwo = 0;
+document.getElementById("total").value = valTotal;
+document.getElementById("total2").value = valTotalTwo;
+var picReset = ['TopCard.jpg', 'NextRound.png'];
+var x = 0;
+var z = 0;
+
+
+
+function draw(){
+
+	
+	// picNames are the picture file names in an array
+	var picNames = [
+'2_of_clubs.png',
+'2_of_diamonds.png',
+'2_of_hearts.png',
+'2_of_spades.png',
+'3_of_clubs.png',
+'3_of_diamonds.png',
+'3_of_hearts.png',
+'3_of_spades.png',
+'4_of_clubs.png',
+'4_of_diamonds.png',
+'4_of_hearts.png',
+'4_of_spades.png',
+'5_of_clubs.png',
+'5_of_diamonds.png',
+'5_of_hearts.png',
+'5_of_spades.png',
+'6_of_clubs.png',
+'6_of_diamonds.png',
+'6_of_hearts.png',
+'6_of_spades.png',
+'7_of_clubs.png',
+'7_of_diamonds.png',
+'7_of_hearts.png',
+'7_of_spades.png',
+'8_of_clubs.png',
+'8_of_diamonds.png',
+'8_of_hearts.png',
+'8_of_spades.png',
+'9_of_clubs.png',
+'9_of_diamonds.png',
+'9_of_hearts.png',
+'9_of_spades.png',
+'10_of_clubs.png',
+'10_of_diamonds.png',
+'10_of_hearts.png',
+'10_of_spades.png',
+'ace_of_clubs.png',
+'ace_of_diamonds.png',
+'ace_of_hearts.png',
+'ace_of_spades.png',
+'ace_of_spades2.png',
+'black_joker.png',
+'jack_of_clubs.png',
+'jack_of_clubs2.png',
+'jack_of_diamonds.png',
+'jack_of_diamonds2.png',
+'jack_of_hearts.png',
+'jack_of_hearts2.png',
+'jack_of_spades.png',
+'jack_of_spades2.png',
+'king_of_clubs.png',
+'king_of_clubs2.png',
+'king_of_diamonds.png',
+'king_of_diamonds2.png',
+'king_of_hearts.png',
+'king_of_hearts2.png',
+'king_of_spades.png',
+'king_of_spades2.png',
+'queen_of_clubs.png',
+'queen_of_clubs2.png',
+'queen_of_diamonds.png',
+'queen_of_diamonds2.png',
+'queen_of_hearts.png',
+'queen_of_hearts2.png',
+'queen_of_spades.png',
+'queen_of_spades2.png',
+'red_joker.png'
+];
+      
+	// resultName is the corresponding picture name in an array
+	
+	var numList = ['2',
+'2',
+'2',
+'2',
+'3',
+'3',
+'3',
+'3',
+'4',
+'4',
+'4',
+'4',
+'5',
+'5',
+'5',
+'5',
+'6',
+'6',
+'6',
+'6',
+'7',
+'7',
+'7',
+'7',
+'8',
+'8',
+'8',
+'8',
+'9',
+'9',
+'9',
+'9',
+'10',
+'10',
+'10',
+'10',
+'11',
+'11',
+'11',
+'11',
+'11',
+'10',
+'10',
+'10',
+'10',
+'10',
+'10',
+'10',
+'10',
+'10',
+'10',
+'10',
+'10',
+'10',
+'10',
+'10',
+'10',
+'10',
+'10',
+'10',
+'10',
+'10',
+'10',
+'10',
+'10',
+'10',
+'10'];
+    	var numName = ['2 of clubs',
+'2 of diamonds',
+'2 of hearts',
+'2 of spades',
+'3 of clubs',
+'3 of diamonds',
+'3 of hearts',
+'3 of spades',
+'4 of clubs',
+'4 of diamonds',
+'4 of hearts',
+'4 of spades',
+'5 of clubs',
+'5 of diamonds',
+'5 of hearts',
+'5 of spades',
+'6 of clubs',
+'6 of diamonds',
+'6 of hearts',
+'6 of spades',
+'7 of clubs',
+'7 of diamonds',
+'7 of hearts',
+'7 of spades',
+'8 of clubs',
+'8 of diamonds',
+'8 of hearts',
+'8 of spades',
+'9 of clubs',
+'9 of diamonds',
+'9 of hearts',
+'9 of spades',
+'1 of clubs',
+'1 of diamonds',
+'1 of hearts',
+'1 of spades',
+'ace of clubs',
+'ace of diamonds',
+'ace of hearts',
+'ace of spades',
+'ace of spades',
+'black joker',
+'jack of clubs',
+'jack of clubs',
+'jack of diamonds',
+'jack of diamonds',
+'jack of hearts',
+'jack of hearts',
+'jack of spades',
+'jack of spades',
+'king of clubs',
+'king of clubs',
+'king of diamonds',
+'king of diamonds',
+'king of hearts',
+'king of hearts',
+'king of spades',
+'king of spades',
+'queen of clubs',
+'queen of clubs',
+'queen of diamonds',
+'queen of diamonds',
+'queen of hearts',
+'queen of hearts',
+'queen of spades',
+'queen of spades',
+'red joker',];
+    	var src = document.getElementById("image1").src;
+	//faceValue creates the randomizer for the index of both the arrays
+	var faceValue = Math.floor(Math.random()*52);
+	
+	
+	//document.getElementById returns the array and the corresponding name back to the page
+	document.getElementById("image1").src = picNames[faceValue];
+	document.getElementById("result").value = numName[faceValue];
+	
+
+
+
+	//NESTED FUNCTION controls the movment of the card
+	var elem = document.getElementById("image1");   
+  	var pos = 0;
+  	var id = setInterval(frame, 1);
+  	function frame() {
+   		 if (pos == 450) {
+      	clearInterval(id);
+    } else {
+      pos++; 
+     
+      elem.style.left = pos + 'px'; 
+    }
+  }
+
+
+
+
+
+	if(counter == 0){
+		document.getElementById("historyOne").src = picNames[faceValue];
+	} else if(counter == 1){
+		document.getElementById("historyTwo").src= picNames[faceValue];
+	} else if(counter == 2){
+		document.getElementById("historyThree").src=picNames[faceValue];
+	} else if(counter == 3){
+		document.getElementById("historyFour").src=picNames[faceValue];
+	} else if(counter ==4){
+		document.getElementById("historyFive").src=picNames[faceValue];
+	}
+
+
+	 // returns the summation of the card values
+	 x+=parseFloat(numList[faceValue]);
+	
+	document.getElementById("char").value = x;
+	if(x>21){
+		alert("Player One has lost!");
+		document.getElementById("image1").src = picReset[1];
+		nextRound();
+		
+	}else if(x==21){
+		alert("Player One has reached 21!");
+	
+		document.getElementById("image1").src = picReset[1];
+		nextRound();
+	}
+
+	counter+=1;
+	return x;
+	return counter;
+}
+
+
+
+
+
+
+function checkWinner(){
+	//checkWinner function runs through each possibility of a user winning
+	// bal is balance in the text box
+	var placInput = bal-valTotal;
+	var placInputTwo = balTwo-valTotalTwo;
+	if(x<=21){
+		if(x>z){
+			alert("Player One has won!");
+			//the statement below returns a successful bet if the player has won
+			alert("Player one has gained $" + (placInput*2) + "!");
+			valTotal = valTotal+(placInput*2);
+			bal = valTotal;
+			document.getElementById("total").value = valTotal;
+			
+			nextRound();
+			
+		 
+		}else if(z<=21){
+				if(x<z){
+					alert("Player Two has won!");
+					alert("Player Two has gained $" + (placInputTwo*2) + "!");
+					valTotalTwo = valTotalTwo+(placInputTwo*2);
+					balTwo = valTotalTwo;
+					document.getElementById("total2").value = valTotalTwo;
+				
+					nextRound();
+				}
+			}
+		}
+
+	if(valTotal>=5000){
+		document.write("Player One has won the entire game!");
+	} else if(valTotalTwo >= 5000){
+		document.write("Player Two has won the entire game!");
+	} else if(valTotal==0){
+		document.write("Player One has ran out of money!");
+	}else if(valTotalTwo==0){
+		document.write("Player Two has ran out of money!");
+	}
+
+	return bal;
+	return balTwo;
+}
+
+
+
+
+
+function drawTwo(){
+	var picNames = [
+'2_of_clubs.png',
+'2_of_diamonds.png',
+'2_of_hearts.png',
+'2_of_spades.png',
+'3_of_clubs.png',
+'3_of_diamonds.png',
+'3_of_hearts.png',
+'3_of_spades.png',
+'4_of_clubs.png',
+'4_of_diamonds.png',
+'4_of_hearts.png',
+'4_of_spades.png',
+'5_of_clubs.png',
+'5_of_diamonds.png',
+'5_of_hearts.png',
+'5_of_spades.png',
+'6_of_clubs.png',
+'6_of_diamonds.png',
+'6_of_hearts.png',
+'6_of_spades.png',
+'7_of_clubs.png',
+'7_of_diamonds.png',
+'7_of_hearts.png',
+'7_of_spades.png',
+'8_of_clubs.png',
+'8_of_diamonds.png',
+'8_of_hearts.png',
+'8_of_spades.png',
+'9_of_clubs.png',
+'9_of_diamonds.png',
+'9_of_hearts.png',
+'9_of_spades.png',
+'10_of_clubs.png',
+'10_of_diamonds.png',
+'10_of_hearts.png',
+'10_of_spades.png',
+'ace_of_clubs.png',
+'ace_of_diamonds.png',
+'ace_of_hearts.png',
+'ace_of_spades.png',
+'ace_of_spades2.png',
+'black_joker.png',
+'jack_of_clubs.png',
+'jack_of_clubs2.png',
+'jack_of_diamonds.png',
+'jack_of_diamonds2.png',
+'jack_of_hearts.png',
+'jack_of_hearts2.png',
+'jack_of_spades.png',
+'jack_of_spades2.png',
+'king_of_clubs.png',
+'king_of_clubs2.png',
+'king_of_diamonds.png',
+'king_of_diamonds2.png',
+'king_of_hearts.png',
+'king_of_hearts2.png',
+'king_of_spades.png',
+'king_of_spades2.png',
+'queen_of_clubs.png',
+'queen_of_clubs2.png',
+'queen_of_diamonds.png',
+'queen_of_diamonds2.png',
+'queen_of_hearts.png',
+'queen_of_hearts2.png',
+'queen_of_spades.png',
+'queen_of_spades2.png',
+'red_joker.png'
+];
+      
+	// picName is the corresponding picture name in an array
+	var numList = ['2',
+'2',
+'2',
+'2',
+'3',
+'3',
+'3',
+'3',
+'4',
+'4',
+'4',
+'4',
+'5',
+'5',
+'5',
+'5',
+'6',
+'6',
+'6',
+'6',
+'7',
+'7',
+'7',
+'7',
+'8',
+'8',
+'8',
+'8',
+'9',
+'9',
+'9',
+'9',
+'10',
+'10',
+'10',
+'10',
+'11',
+'11',
+'11',
+'11',
+'11',
+'10',
+'10',
+'10',
+'10',
+'10',
+'10',
+'10',
+'10',
+'10',
+'10',
+'10',
+'10',
+'10',
+'10',
+'10',
+'10',
+'10',
+'10',
+'10',
+'10',
+'10',
+'10',
+'10',
+'10',
+'10',
+'10'];
+
+	var numName = ['2 of clubs',
+'2 of diamonds',
+'2 of hearts',
+'2 of spades',
+'3 of clubs',
+'3 of diamonds',
+'3 of hearts',
+'3 of spades',
+'4 of clubs',
+'4 of diamonds',
+'4 of hearts',
+'4 of spades',
+'5 of clubs',
+'5 of diamonds',
+'5 of hearts',
+'5 of spades',
+'6 of clubs',
+'6 of diamonds',
+'6 of hearts',
+'6 of spades',
+'7 of clubs',
+'7 of diamonds',
+'7 of hearts',
+'7 of spades',
+'8 of clubs',
+'8 of diamonds',
+'8 of hearts',
+'8 of spades',
+'9 of clubs',
+'9 of diamonds',
+'9 of hearts',
+'9 of spades',
+'1 of clubs',
+'1 of diamonds',
+'1 of hearts',
+'1 of spades',
+'ace of clubs',
+'ace of diamonds',
+'ace of hearts',
+'ace of spades',
+'ace of spades',
+'black joker',
+'jack of clubs',
+'jack of clubs',
+'jack of diamonds',
+'jack of diamonds',
+'jack of hearts',
+'jack of hearts',
+'jack of spades',
+'jack of spades',
+'king of clubs',
+'king of clubs',
+'king of diamonds',
+'king of diamonds',
+'king of hearts',
+'king of hearts',
+'king of spades',
+'king of spades',
+'queen of clubs',
+'queen of clubs',
+'queen of diamonds',
+'queen of diamonds',
+'queen of hearts',
+'queen of hearts',
+'queen of spades',
+'queen of spades',
+'red joker',];
+    //each array serves a different purpose
+	//numList sets all the king,jacks,queen values etc. to a certain number
+    	var src = document.getElementById("image2").src;
+	//faceValue creates the randomizer for the index of both the arrays
+	var randomValue = Math.floor(Math.random()*52);
+	
+	document.getElementById("image2").src = picNames[randomValue];
+	document.getElementById("result2").value = numName[randomValue];
+	
+	// rerranges the value that you get from the array 
+	//nested function for the pic animation
+	var elem = document.getElementById("image2");   
+  	var pos = 0;
+  	var id = setInterval(frame, 1);
+  	function frame() {
+   		 if (pos == 450) {
+      	clearInterval(id);
+    } else {
+      pos++; 
+      elem.style.left = pos + 'px'; 
+    }
+  }
+
+
+	
+
+
+	if(counterTwo == 0){
+		document.getElementById("historySix").src = picNames[randomValue];
+	} else if(counterTwo == 1){
+		document.getElementById("historySeven").src = picNames[randomValue];
+	} else if(counterTwo == 2){
+		document.getElementById("historyEight").src =  picNames[randomValue];
+	} else if(counterTwo == 3){
+		document.getElementById("historyNine").src = picNames[randomValue];
+	} else if(counterTwo == 4){
+		document.getElementById("historyTen").src = picNames[randomValue];
+	}
+	
+	//keeps adding onto the previous card
+
+	z+=parseFloat(numList[randomValue]);
+	
+	//if player two gets values that are greater than 21 it declares immediately player 2 has lost
+	if(z>21){
+		alert("Player Two has lost");
+		
+		nextRound();
+		document.getElementById("image2").src = picReset[1];
+		
+	}else if(z==21){
+		alert("Player Two has reached 21!");
+		nextRound();
+		document.getElementById("image2").src = picReset[1];
+	}
+	
+	//gives the value of the summation into the text box
+	document.getElementById("char2").value = z;
+
+	counterTwo+=1;
+	return z;
+	return counterTwo;
+}
+
+
+
+
+
+function nextRound(){
+	//resets the text box values
+	//returns the point total text box value back to zero for the next round
+
+
+	document.getElementById("result").value = "Next Round!";
+	document.getElementById("result2").value ="Next Round!";
+	document.getElementById("char").value = "0";
+	document.getElementById("char2").value = "0";
+
+	document.getElementById("historyOne").src = picReset[0];
+	document.getElementById("historyTwo").src = picReset[0];
+	document.getElementById("historyThree").src = picReset[0];
+	document.getElementById("historyFour").src = picReset[0];
+	document.getElementById("historyFive").src = picReset[0];
+	document.getElementById("historySix").src = picReset[0];
+	document.getElementById("historySeven").src = picReset[0];
+	document.getElementById("historyEight").src = picReset[0];
+	document.getElementById("historyNine").src = picReset[0];
+	document.getElementById("historyTen").src = picReset[0];
+
+	
+	alert("Next Round!");
+
+	x = 0;
+	z = 0;
+	counter = -1;
+	counterTwo = -1;
+	return counter;
+	return counterTwo;
+	return x;
+	return z;
+	
+	
+	
+}
+
+
+
+
+function gamble(){
+	
+	var input = document.getElementById("gambleOne").value;
+	alert("Player One has gambled $" + input + "!");
+	if(x<21){
+		if(input <= valTotal){
+		valTotal-=parseFloat(input);
+		}else if(input > valTotal){
+		alert("Invalid Funds");
+		
+		}
+	}
+	document.getElementById("total").value = valTotal;
+	return valTotal;
+}
+
+
+
+
+//The gamble functions serve as the equation for the amount gambled and the amount returned back if the user wins
+
+
+
+
+
+function gambleTwo(){
+	
+	var inputTwo = document.getElementById("gambleTwo").value;
+	alert("Player Two has gambled $" + inputTwo + "!");
+	if(z<21){
+		if(inputTwo <= valTotalTwo){
+		valTotalTwo-=parseFloat(inputTwo);
+		}else if(inputTwo > valTotalTwo){
+		alert("Invalid Funds");
+		}
+	}
+	document.getElementById("total2").value = valTotalTwo;
+	
+	return valTotalTwo;
+}
+
+</script>
+</body>
+</html>
